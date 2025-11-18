@@ -1,51 +1,87 @@
+# 🔎 Google Advanced Search Tool
 
-# Google-Advance-Search-Tool
+A modern, animated desktop application for building advanced Google search queries with file type filtering.
 
-A small desktop utility to help you build Google advanced search queries quickly, with optional filetype filtering and convenient clipboard/browser actions.
+## 📝 Description
 
-**Highlights**
-- Simple, focused UI for composing advanced Google queries
-- File type selection to add `filetype:` filters
-- Copy to clipboard and open query in browser
+Google Advanced Search Tool is a user-friendly GUI application that helps you construct powerful Google search queries effortlessly. Perfect for researchers, students, developers, and anyone who needs to find specific file types on the web.
 
-**Repository Files**
-- `google_advance_search_tool.py`: main app entry
-- `recent_queries.json`: stores a short list of recent queries
-- `requirements.txt`: Python dependencies
+## ✨ Features
 
-**Requirements**
-- Python 3.8+
-- See `requirements.txt` for runtime packages
+- **Modern Dark UI** - Sleek, professional interface with smooth animations
+- **18 File Type Filters** - Search for PDF, DOC, PPT, XLS, EXE, ISO, and more
+- **One-Click Search** - Generate and search directly in your browser
+- **Quick Copy** - Copy generated queries to clipboard instantly
+- **Live Preview** - See your query before searching
+- **Smooth Animations** - Entrance effects, button pulses, and success notifications
 
-Quick install (virtualenv recommended):
-```powershell
-python -m venv .venv; .\.venv\Scripts\Activate.ps1; pip install -r requirements.txt
+## 🎯 Use Cases
+
+- Find research papers (PDF)
+- Locate presentations (PPT/PPTX)
+- Search for spreadsheets (XLS/XLSX)
+- Download documents (DOC/DOCX)
+- Find datasets (CSV/JSON/XML)
+- And much more!
+
+## 🚀 Installation
+
+1. **Clone or download this repository**
+
+2. **Install required dependencies:**
+```bash
+pip install -r requirements.txt
 ```
 
-Run the app:
-```powershell
-python .\google_advance_search_tool.py
+3. **Run the application:**
+```bash
+python google_advanced_search_tool.py
 ```
 
-Usage
-- Type your search terms in the input field.
-- Optionally pick a filetype (e.g. `pdf`, `docx`, `png`).
-- Click `GENERATE QUERY` to compose the query (adds `filetype:` when selected).
-- Use `COPY QUERY` to copy to clipboard or `SEARCH QUERY` to open the query in your default browser.
+## 📦 Requirements
 
-Examples
-- Query: `machine learning`, Filetype: `pdf` → `machine learning filetype:pdf`
+- Python 3.7+
+- customtkinter
+- pyperclip
 
-recent_queries.json
-- The app persists a short array of recent query strings in `recent_queries.json`. You can edit or clear it manually; it must remain valid JSON (an array of strings).
+## 💡 How to Use
 
-Troubleshooting
-- If GUI doesn't start on Windows, ensure `PyQt5` installed into the active environment.
-- If `pyperclip` copy fails, check clipboard permissions or try running the app from an elevated prompt.
+1. **Enter your search query** in the center text box
+2. **Select a file type** from the left panel (or choose "None")
+3. **Click "GENERATE QUERY"** to build your search string
+4. **Click "SEARCH QUERY"** to open Google in your browser
+5. **Click "COPY QUERY"** to copy the query to clipboard
 
-Contributing
-- Bug reports and small fixes welcome via issues or pull requests.
+## 🎨 Supported File Types
 
-License
-- MIT
+PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX, TXT, CSV, EXE, ISO, IMG, ZIP, RAR, SQL, XML, JSON
 
+## 📸 Features Preview
+
+- **Query Type Panel** - Easy file type selection with radio buttons
+- **Search Input** - Large text area for complex queries
+- **Action Buttons** - Color-coded for different operations
+- **Status Bar** - Real-time feedback on your actions
+
+## 🛠️ Technical Details
+
+- Built with **CustomTkinter** for modern UI components
+- **Smooth animations** for better user experience
+- **Cross-platform** - Works on Windows, macOS, and Linux
+- **Lightweight** - Minimal dependencies
+
+## 📄 License
+
+Free to use for personal and educational purposes.
+
+## 🤝 Contributing
+
+Feel free to fork, modify, and submit pull requests!
+
+## ⚠️ Disclaimer
+
+This tool helps construct Google search queries. Please use responsibly and respect website terms of service and copyright laws.
+
+---
+
+**Made with ❤️ for easier web searching**

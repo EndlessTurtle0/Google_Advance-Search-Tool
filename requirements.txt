@@ -1,0 +1,5 @@
+PyQt5>=5.15.0
+pyperclip>=1.8.2
+
+# Install with:
+# pip install -r requirements.txt

@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google-Advance-Search-Tool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            background: rgba(30, 30, 50, 0.95);
+            border-radius: 25px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+            max-width: 1400px;
+            width: 100%;
+            padding: 40px;
+            opacity: 0;
+            animation: containerFadeIn 0.8s ease-out forwards;
+        }
+
+        @keyframes containerFadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: slideDown 0.6s ease-out 0.3s forwards;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header h1 {
+            color: #ffffff;
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            letter-spacing: 2px;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr 240px;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 1200px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* LEFT PANEL - Query Type */
+        .left-panel {
+            background: linear-gradient(180deg, #2d2d44 0%, #1a1a2e 100%);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transform: translateX(-100px);
+            opacity: 0;
+            animation: slideInLeft 0.6s ease-out 0.4s forwards;
+        }
+
+        @keyframes slideInLeft {
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .panel-title {
+            color: #ffffff;
+            font-size: 1.5em;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #5b21b6;
+            text-shadow: 0 2px 10px rgba(91, 33, 182, 0.5);
+        }
+
+        .file-types-container {
+            max-height: 520px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .file-types-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .file-types-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .file-types-container::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #7e22ce, #5b21b6);
+            border-radius: 10px;
+        }
+
+        .file-type-btn {
+            display: block;
+            width: 100%;
+            padding: 14px 20px;
+            margin: 8px 0;
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .file-type-btn:hover {
+            background: rgba(126, 34, 206, 0.2);
+            border-color: #7e22ce;
+            transform: translateX(8px);
+            box-shadow: 0 5px 20px rgba(126, 34, 206, 0.4);
+        }
+
+        .file-type-btn.selected {
+            background: linear-gradient(135deg, #7e22ce, #5b21b6);
+            border-color: #a855f7;
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(126, 34, 206, 0.6);
+        }
+
+        /* CENTER PANEL - Search Query */
+        .center-panel {
+            background: linear-gradient(180deg, #2d2d44 0%, #1a1a2e 100%);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            animation: fadeInUp 0.6s ease-out 0.5s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .center-title {
+            color: #ffffff;
+            font-size: 2.2em;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 25px;
+            text-shadow: 0 3px 15px rgba(126, 34, 206, 0.6);
+            letter-spacing: 3px;
+        }
+
+        .search-textarea {
+            width: 100%;
+            min-height: 180px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 3px solid rgba(126, 34, 206, 0.3);
+            border-radius: 15px;
+            color: #ffffff;
+            font-size: 1.2em;
+            font-family: inherit;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+
+        .search-textarea:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.12);
+            border-color: #7e22ce;
+            box-shadow: 0 0 30px rgba(126, 34, 206, 0.5);
+        }
+
+        .search-textarea::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .output-section {
+            margin-top: 25px;
+        }
+
+        .output-label {
+            color: #a855f7;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 10px rgba(168, 85, 247, 0.5);
+        }
+
+        .output-display {
+            width: 100%;
+            min-height: 90px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(126, 34, 206, 0.4);
+            border-radius: 12px;
+            color: #a855f7;
+            font-size: 1.1em;
+            font-family: 'Courier New', monospace;
+            word-wrap: break-word;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* RIGHT PANEL - Action Buttons */
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            transform: translateX(100px);
+            opacity: 0;
+            animation: slideInRight 0.6s ease-out 0.6s forwards;
+        }
+
+        @keyframes slideInRight {
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .action-button {
+            padding: 30px 20px;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #ffffff;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+            line-height: 1.4;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .action-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .action-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .action-button:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .btn-generate {
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+        }
+
+        .btn-clear {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            box-shadow: 0 8px 25px rgba(249, 115, 22, 0.4);
+        }
+
+        .btn-search {
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-copy {
+            background: linear-gradient(135deg, #a855f7, #7e22ce);
+            box-shadow: 0 8px 25px rgba(168, 85, 247, 0.4);
+        }
+
+        /* Status Bar */
+        .status-bar {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px 25px;
+            border-radius: 15px;
+            text-align: center;
+            color: #a855f7;
+            font-size: 1.05em;
+            border: 2px solid rgba(126, 34, 206, 0.3);
+            opacity: 0;
+            animation: fadeIn 0.6s ease-out 0.7s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .status-bar.success {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            border-color: #10b981;
+        }
+
+        .status-bar.error {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border-color: #ef4444;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            font-size: 1.1em;
+            font-weight: bold;
+            z-index: 1000;
+            animation: toastSlideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+                       toastSlideOut 0.5s cubic-bezier(0.4, 0, 0.2, 1) 2.5s forwards;
+        }
+
+        @keyframes toastSlideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes toastSlideOut {
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+            20%, 40%, 60%, 80% { transform: translateX(10px); }
+        }
+
+        .shake {
+            animation: shake 0.6s cubic-bezier(.36,.07,.19,.97);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.08); box-shadow: 0 0 30px rgba(126, 34, 206, 0.8); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 0.4s ease-in-out;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(126, 34, 206, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(168, 85, 247, 0.8); }
+        }
+
+        .glow {
+            animation: glow 1s ease-in-out infinite;
+        }
+
+        /* Ripple Effect */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0);
+            animation: rippleEffect 0.6s ease-out;
+            pointer-events: none;
+        }
+
+        @keyframes rippleEffect {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* Loading Spinner */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Google-Advance-Search-Tool</h1>
+        </div>
+
+        <div class="main-grid">
+            <!-- LEFT PANEL: Query Type (File Types) -->
+            <div class="left-panel">
+                <div class="panel-title">Query Type</div>
+                <div class="file-types-container" id="fileTypesContainer"></div>
+            </div>
+
+            <!-- CENTER PANEL: Search Query -->
+            <div class="center-panel">
+                <div class="center-title">SEARCH-QUERY</div>
+                <textarea 
+                    class="search-textarea" 
+                    id="searchInput" 
+                    placeholder="Your Query Here"
+                ></textarea>
+
+                <div class="output-section">
+                    <div class="output-label">Generate Query</div>
+                    <div class="output-display" id="outputDisplay">Your generated query will appear here...</div>
+                </div>
+            </div>
+
+            <!-- RIGHT PANEL: Action Buttons -->
+            <div class="right-panel">
+                <button class="action-button btn-generate" onclick="generateQuery()">
+                    GENERATE<br>QUERY
+                </button>
+                <button class="action-button btn-clear" onclick="clearQuery()">
+                    CLEAR<br>QUERY
+                </button>
+                <button class="action-button btn-search" onclick="searchQuery()">
+                    SEARCH<br>QUERY
+                </button>
+                <button class="action-button btn-copy" onclick="copyQuery()">
+                    COPY<br>QUERY
+                </button>
+            </div>
+        </div>
+
+        <div class="status-bar" id="statusBar">Ready</div>
+    </div>
+
+    <script>
+        const fileTypes = [
+            "None", "ppt", "pptx", "csv", "xls", "xlsx", "xml",
+            "docx", "doc", "txt", "exe", "iso", "rar", "pdf",
+            "img", "json", "zip", "sql"
+        ];
+
+        let selectedFileType = "None";
+        let generatedQuery = "";
+
+        // Initialize file type buttons
+        function initFileTypes() {
+            const container = document.getElementById('fileTypesContainer');
+            fileTypes.forEach((type, index) => {
+                const button = document.createElement('button');
+                button.className = 'file-type-btn' + (type === 'None' ? ' selected' : '');
+                button.textContent = type;
+                button.onclick = () => selectFileType(type, button);
+                
+                // Staggered animation
+                button.style.opacity = '0';
+                button.style.transform = 'translateX(-20px)';
+                setTimeout(() => {
+                    button.style.transition = 'all 0.4s ease-out';
+                    button.style.opacity = '1';
+                    button.style.transform = 'translateX(0)';
+                }, 800 + (index * 30));
+                
+                container.appendChild(button);
+            });
+        }
+
+        function selectFileType(type, button) {
+            // Remove previous selection
+            document.querySelectorAll('.file-type-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            
+            // Add selection with animation
+            button.classList.add('selected', 'pulse');
+            setTimeout(() => button.classList.remove('pulse'), 400);
+            
+            selectedFileType = type;
+            updateStatus(`Selected: ${type}`, 'success');
+            
+            // Add ripple effect
+            createRipple(button, event);
+        }
+
+        function generateQuery() {
+            const searchText = document.getElementById('searchInput').value.trim();
+            
+            if (!searchText) {
+                updateStatus('⚠️ Please enter a search query', 'error');
+                const input = document.getElementById('searchInput');
+                input.classList.add('shake');
+                setTimeout(() => input.classList.remove('shake'), 600);
+                return;
+            }
+
+            // Build query
+            if (selectedFileType !== "None") {
+                generatedQuery = `${searchText} filetype:${selectedFileType}`;
+            } else {
+                generatedQuery = searchText;
+            }
+
+            // Display with animation
+            const output = document.getElementById('outputDisplay');
+            output.style.opacity = '0';
+            output.style.transform = 'scale(0.95)';
+            
+            setTimeout(() => {
+                output.textContent = generatedQuery;
+                output.style.transition = 'all 0.3s ease-out';
+                output.style.opacity = '1';
+                output.style.transform = 'scale(1)';
+                output.classList.add('glow');
+                setTimeout(() => output.classList.remove('glow'), 1000);
+            }, 100);
+
+            updateStatus('✓ Query generated successfully!', 'success');
+            
+            // Pulse button
+            event.target.classList.add('pulse');
+            setTimeout(() => event.target.classList.remove('pulse'), 400);
+        }
+
+        function clearQuery() {
+            const input = document.getElementById('searchInput');
+            const output = document.getElementById('outputDisplay');
+            
+            // Fade out animation
+            input.style.transition = 'opacity 0.3s ease';
+            input.style.opacity = '0';
+            
+            setTimeout(() => {
+                input.value = '';
+                input.style.opacity = '1';
+            }, 300);
+            
+            output.style.opacity = '0';
+            setTimeout(() => {
+                output.textContent = 'Your generated query will appear here...';
+                output.style.opacity = '1';
+            }, 300);
+            
+            generatedQuery = '';
+            
+            // Reset to "None"
+            selectedFileType = "None";
+            document.querySelectorAll('.file-type-btn').forEach(btn => {
+                btn.classList.remove('selected');
+                if (btn.textContent === 'None') {
+                    btn.classList.add('selected');
+                }
+            });
+            
+            updateStatus('Cleared all fields');
+            
+            // Button animation
+            event.target.classList.add('pulse');
+            setTimeout(() => event.target.classList.remove('pulse'), 400);
+        }
+
+        function searchQuery() {
+            if (!generatedQuery) {
+                generateQuery();
+                if (!generatedQuery) return;
+            }
+
+            const encodedQuery = encodeURIComponent(generatedQuery);
+            const url = `https://www.google.com/search?q=${encodedQuery}`;
+            
+            window.open(url, '_blank');
+            updateStatus('🌐 Opened in new tab', 'success');
+            showToast('🚀 Searching Google...');
+            
+            // Button animation
+            event.target.classList.add('pulse');
+            setTimeout(() => event.target.classList.remove('pulse'), 400);
+        }
+
+        function copyQuery() {
+            if (!generatedQuery) {
+                generateQuery();
+                if (!generatedQuery) return;
+            }
+
+            navigator.clipboard.writeText(generatedQuery).then(() => {
+                showToast('📋 Copied to clipboard!');
+                updateStatus('📋 Copied successfully!', 'success');
+                
+                // Button animation
+                event.target.classList.add('pulse');
+                setTimeout(() => event.target.classList.remove('pulse'), 400);
+            }).catch(() => {
+                updateStatus('⚠️ Copy failed', 'error');
+            });
+        }
+
+        function updateStatus(message, type = '') {
+            const statusBar = document.getElementById('statusBar');
+            statusBar.style.transition = 'all 0.3s ease';
+            statusBar.style.opacity = '0';
+            
+            setTimeout(() => {
+                statusBar.textContent = message;
+                statusBar.className = 'status-bar ' + type;
+                statusBar.style.opacity = '1';
+            }, 150);
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        function createRipple(element, e) {
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple';
+            
+            const rect = element.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+            
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            
+            element.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', () => {
+            initFileTypes();
+        });
+
+        // Keyboard shortcut: Ctrl+Enter to generate
+        document.getElementById('searchInput').addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'Enter') {
+                generateQuery();
+            }
+        });
+
+        // Add button click sound effect (optional)
+        document.querySelectorAll('.action-button').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                createRipple(this, e);
+            });
+        });
+    </script>
+</body>
+</html>
